@@ -1,0 +1,57 @@
+services:
+  _defaults:
+    public: true
+
+  prestashop.module.myblog.article_repository:
+    class: 'PrestaShop\Module\MyBlog\Repositories\ArticleRepository'
+    arguments:
+      $registry: '@doctrine.manager_registry'
+
+  prestashop.module.myblog.article.form_provider:
+    class: 'PrestaShop\Module\MyBlog\Form\ArticleFormDataProvider'
+    arguments:
+      $repository: '@prestashop.module.myblog.article_repository'
+
+  prestashop.module.myblog.article_type:
+    class: 'PrestaShop\Module\MyBlog\Form\Type\ArticleType'
+    public: true
+    arguments:
+      $categories: '@=service("prestashop.module.myblog.choice_provider.category").getChoices()'
+    tags:
+      - {name : form.type}
+
+  prestashop.module.myblog.article.form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\FormHandler'
+    arguments:
+      $formBuilder: '@=service("form.factory").createBuilder()'
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+      $formDataProvider: '@prestashop.module.myblog.article.form_provider'
+      $formTypes:
+        'article': 'PrestaShop\Module\MyBlog\Form\Type\ArticleType'
+      $hookName: AdminArticleWidget
+
+
+
+
+  prestashop.module.myblog.category.form_provider:
+    class: 'PrestaShop\Module\MyBlog\Form\CategoryFormDataProvider'
+
+  prestashop.module.myblog.category_type:
+    class: 'PrestaShop\Module\MyBlog\Form\Type\CategoryType'
+    public: true
+
+  prestashop.module.myblog.category.form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\FormHandler'
+    arguments:
+      $formBuilder: '@=service("form.factory").createBuilder()'
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+      $formDataProvider: '@prestashop.module.myblog.article.form_provider'
+      $formTypes:
+        'category': 'PrestaShop\Module\MyBlog\Form\Type\CategoryType'
+      $hookName: AdminCategoryPage
+
+  prestashop.module.myblog.choice_provider.category:
+    class: PrestaShop\Module\MyBlog\Form\ChoiceProvider\CategoryChoiceProvider
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'

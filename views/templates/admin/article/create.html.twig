@@ -1,0 +1,35 @@
+{% extends "@PrestaShop/Admin/layout.html.twig" %}
+
+{% block content %}
+    {% set formAction = url('create_article_process_action') %}
+    {{form_start(articleForm, {'action' : formAction})}}
+        {% block article_form %}
+            <div class='card'>
+                <h3 class="card-header">
+                    Create new article
+                </h3>
+                <div class="card-block row">
+                    <div class="card-text">
+                        {{ form_row(articleForm.article.title) }}
+                        {{ form_row(articleForm.article.preview) }}
+                        {{ form_row(articleForm.article.category) }}
+                        {# <div class='form-group'> #}
+                            {# <textarea class='form-control' cols="50" rows="6"> #}
+                                {{ form_row(articleForm.article.content) }}
+                            {# </textarea> #}
+                        {# </div> #}
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {{form_end(articleForm)}}
+{% endblock %}
+
+{% block csss %}
+<style>
+    .content-text {
+        margin: auto !important;
+        width: 100% !important;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,24 @@
+create_article:
+  path: /myblog/create/article
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\MyBlog\Controller\Admin\ArticleController::createAction'
+
+create_article_process_action:
+  path: /myblog/create/article
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShop\Module\MyBlog\Controller\Admin\ArticleController::processAction'
+
+
+create_category:
+  path: /myblog/create/category
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\MyBlog\Controller\Admin\CategoryController::createAction'
+
+create_category_process_action:
+  path: /myblog/create/category
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShop\Module\MyBlog\Controller\Admin\CategoryController::processAction' 
